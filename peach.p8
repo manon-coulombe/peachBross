@@ -11,8 +11,12 @@ p.y = 80
 p.dx = 0
 p.dy = 0
 
-x1 = 30
-y1 = 80
+m = {}
+m.x = 30
+m.y = 80
+
+dist = p.x - m.x
+
 end
 
 function is_grounded() 
@@ -22,12 +26,12 @@ end
 
 function _update()
 	if (btn(➡️)) p.x += 2
-	if (btn(⬅️)) p.x -= 2
+	if (btn(⬅️)and p.x>0) p.x -= 2
 
 --	if (btn(➡️)) p.dx = 1
 --	if (btn(⬅️)) p.dx = -1
 --	p.x += p.dx
-	
+
 	if (is_grounded()) then 
 		p.dy = 0 --pas de gravite (au sol)
 		if (btnp(⬆️)) p.dy = -6
@@ -35,9 +39,15 @@ function _update()
 		p.dy += 1 --gravite (on tombe)
 		if (p.dy > 2) p.dy = 2
 	end
-	
-	p.y += p.dy
+		p.y += p.dy
+		if(p.x<m.x) then
+			m.x-=1
+		else
+			m.x+=1		
+		end
+update_camera()
 end
+
 
 function _draw()
 cls()
@@ -52,6 +62,15 @@ function draw_map()
 	map()
 end
 
+function update_camera()
+	camx=0
+	if(p.x>=60) then
+		camx= p.x-60
+	end
+	camy= 0
+	camera(camx,camy)
+end
+
 
 -->8
 --player
@@ -62,8 +81,8 @@ function draw_peach()
 end
 
 function draw_mario()
-	spr(7,x1,y1)
-	spr(8,x1,y1+8)
+	spr(7,m.x,m.y)
+	spr(8,m.x,m.y+8)
 end
 __gfx__
 7eeeeee70a9999a0bbbbbbbbbbbbbbbbbb3333bb1111111144444444088888800018810033333333444444443333333377777777bbbbbbbbcccccccc00000000
