@@ -10,6 +10,7 @@ p = {
 	y = 80,
 	dx = 0,
 	dy = 0,
+	life = 3,
 }
 
 m = {
@@ -18,7 +19,6 @@ m = {
 }	
 
 enemies={}
-
 create_enemies()
 end
 
@@ -26,6 +26,9 @@ function _update()
 	move_peach()
 	jump_peach()
 	follow_mario()	
+	if #enemies==0 then
+		create_enemies()
+	end	
 	update_enemies()
 	update_camera()
 end
@@ -64,6 +67,7 @@ end
 function draw_peach()
 	spr(1,p.x,p.y)
 	spr(0,p.x,p.y+8)
+--	printh("p.x="..p.x)
 end
 
 function draw_mario()
@@ -118,8 +122,15 @@ function update_enemies()
 		end
 		--collision
 		if collision(e,p) then
-			del(enemies,e)
+			p.life-=1
+			p.y-=10
+			printh("p.life="..p.life)
+			if p.life==0 then
+				p.x=10
+				p.life=3
+			end
 		end
+		--	del(enemies,e)
 	end
 end
 -->8
