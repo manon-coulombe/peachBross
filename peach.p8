@@ -18,6 +18,9 @@ m = {
 	y = 80,
 }	
 
+camx=0
+camy=0
+
 enemies={}
 create_enemies()
 end
@@ -52,11 +55,9 @@ function draw_map()
 end
 
 function update_camera()
-	camx=0
-	if(p.x>=60) then
+	if(p.x>=60 and p.x<=956) then
 		camx= p.x-60
 	end
-	camy= 0
 	camera(camx,camy)
 end
 
@@ -76,7 +77,7 @@ function draw_mario()
 end
 
 function move_peach()
-	if (btn(➡️)) p.x += 2
+	if (btn(➡️)and p.x<127*8) p.x += 2
 	if (btn(⬅️)and p.x>0) p.x -= 2
 end
 
