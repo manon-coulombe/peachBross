@@ -31,8 +31,12 @@ camy=0
 enemies={}
 
 enemies[1] = {
-x=flr(rnd(p.x+60)),
+x=flr(rnd(p.x+100)),
 y=88,
+}
+enemies[2] = {
+x=flr(rnd(p.x+100)),
+y=40,
 }
 
 end
@@ -106,8 +110,8 @@ function jump_peach()
 
 	if (p.dy>=0 and  is_grounded()) then
 		p.dy = 0 --pas de gravite (au sol)
+		sfx(2)
 		if (btnp(⬆️)) p.dy = -7.5
-		sfx(1)
 	else
 		p.dy += 1 --gravite (on tombe)
 		if (p.dy > 2) p.dy = 2
@@ -135,6 +139,7 @@ end
 function draw_enemies()
 	for e in all(enemies)do
 		spr(37,e.x,e.y)
+		spr(44,e.x+50,e.y+50)
 	end
 end
 
