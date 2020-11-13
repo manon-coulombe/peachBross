@@ -18,7 +18,7 @@ p = {
 m = {
 	x = 30,
 	y = 88,
-}	
+}
 
 d = {
 	x = 930,
@@ -29,16 +29,21 @@ camx=0
 camy=0
 
 enemies={}
-create_enemies()
+
+enemies[1] = {
+x=flr(rnd(p.x+60)),
+y=88,
+}
+
 end
 
 function _update()
 	move_peach()
 	jump_peach()
-	follow_mario()	
+	follow_mario()
 	if #enemies==0 then
 		create_enemies()
-	end	
+	end
 	update_enemies()
 	update_camera()
 end
@@ -51,7 +56,7 @@ function _draw()
 	draw_daisy()
 	draw_peach()
 	draw_enemies()
-end	
+end
 -->8
 --map
 
@@ -91,38 +96,38 @@ function move_peach()
 	if (btn(⬅️)and p.x>0) p.x -= 2
 end
 
-function is_grounded() 
+function is_grounded()
 	bloc = mget(flr((p.x+4)/8),flr((p.y+8)/8)+1) --on recupere le bloc en dessous du joueur
-	bloc2 =mget(flr((p.x+4)/8),flr((p.y+8)/8)+1)             
+	bloc2 =mget(flr((p.x+4)/8),flr((p.y+8)/8)+1)
 	return fget(bloc,0) --on verifie si il y a le flag 0 dessus
 end
 
 function jump_peach()
- 
-	if (p.dy>=0 and  is_grounded()) then  
+
+	if (p.dy>=0 and  is_grounded()) then
 		p.dy = 0 --pas de gravite (au sol)
 		if (btnp(⬆️)) p.dy = -7.5
+		sfx(1)
 	else
 		p.dy += 1 --gravite (on tombe)
 		if (p.dy > 2) p.dy = 2
 	end
 		p.y += p.dy
-end		
-		
-function follow_mario()		
+end
+
+function follow_mario()
 	if(p.x<m.x) then
 		m.x-=1
 	else
-		m.x+=1		
+		m.x+=1
 	end
-end	
+end
 -->8
 --enemies
 
 function create_enemies()
 	new_enemy={
-		x=150,
-		y=88,
+
 	}
 	add(enemies,new_enemy)
 end
@@ -135,12 +140,14 @@ end
 
 function update_enemies()
 	for e in all(enemies)do
-		e.x-=0.5
+    printh(e.x)
+    e.x-=0.5
 		if e.x < 0 then
 			del(enemies,e)
 		end
 		--collision
 		if collision(e,p) then
+			sfx(4)
 			p.life-=1
 			p.y-=10
 			printh("p.life="..p.life)
@@ -170,34 +177,34 @@ end
 function collide_map(obj,aim,flag)
 	--obj = table needs x,y,w,h
 	--aim = left, right, up, down
-	
+
 	local x=obj.x		local y=obj.y
 	local w=obj.w		local h=obj.h
-	
+
 	local x1=0		local y1=0
 	local x2=0		local y2=0
-	
+
 	if aim=="left" then
 		x1=x-1		y1=y
 		x2=x				y2=y+h-1
-	
+
 	elseif aim=="right" then
 		x1=x+w-1		y1=y
 		x2=x+w				y2=y+h-1
-	
+
 	elseif aim =="up" then
 		x1=x+2				y1=y-1
 		x2=x+w-3		y2=y
-	
+
 	elseif aim=="down" then
 		x1=x+2				y1=y+h
 		x2=x+w-3		y2=y+h
 	end
-	
+
 	--pixels to tiles
 	x1/=8		y1/=8
 	x2/=8		y2/=8
-	
+
 	if fget(mget(x1,y1), flag)
 	or fget(mget(x1,y2), flag)
 	or fget(mget(x2,y1), flag)
@@ -205,10 +212,10 @@ function collide_map(obj,aim,flag)
 		return true
 	else
 		return false
-	end	
+	end
 end
-	
-	
+
+
 __gfx__
 7eeeeee70a9999a0bbbbbbbbbbbbbbbbbb3333bb11111111444444440888888000188100bbbbbbbb444444443333333377777777bbbbbbbbcccccccccccc7ccc
 7eeccee7aaffffaabbbbbbbbbbbbbbbbb33aa33b111111114444444488877888089119803bbb3bbb445444443b3333b377777b77bbbbbbbbcccccccccccc7ccc
@@ -504,3 +511,9 @@ __map__
 0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
+__sfx__
+000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0001000006050090500b0500c0500e050100501305016050180501a0501c0501f0502205024050270502a0502d05030050320503405035050390503a0503d0503f05000000000000000000000000000000000000
+000100000c7500d7500e750107501175012750137501575016750177501a7501b7501c7501e7502175023750277502a7502d75031750347503475000000000000000000000000000000000000000000000000000
+00060000207601f7601e7501e7401d7201d7101d7101d7101d7303b7501c7501c7501c7401c7403c7301b7301b7301b7303c7403c7401b7401b7501b7503b7601b7703a7401b7401b730377301b720337201b770
+000100003e0503d0503c0503c0403c0403a040390403804036040350403204030040300402d0402b0502b050280502705025050230602106020060200701f0701f0701f0701e0701e07020070200701e0701c070
