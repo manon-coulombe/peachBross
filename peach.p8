@@ -35,6 +35,7 @@ function _init()
 	camy=0
 
 	enemies={}
+	create_enemies()
 --[[
 	enemies[1] = {
 	x=flr(rnd(p.x+60)),
@@ -49,7 +50,7 @@ function _update()
 --	if #enemies==0 then
 --		create_enemies()
 --	end
---	update_enemies()
+	update_enemies()
 	update_camera()
 end
 
@@ -60,7 +61,7 @@ function _draw()
 	draw_mario()
 	draw_daisy()
 	draw_peach()
---	draw_enemies()
+	draw_enemies()
 end
 -->8
 --map
@@ -152,9 +153,9 @@ function move_peach()
 	
 	p.x+=p.dx	
 	p.y+=p.dy
-	if (p.dy > 2) p.dy = 2
-		
-end	
+	if (p.dy > 2) p.dy = 2	
+end
+	
 function follow_mario()
 	if(p.x<m.x) then
 		m.x-=1
@@ -164,10 +165,13 @@ function follow_mario()
 end
 -->8
 --enemies
---[[
+
 function create_enemies()
 	new_enemy={
-
+		x=80,
+		y=96,
+		h=8,
+		w=8
 	}
 	add(enemies,new_enemy)
 end
@@ -180,28 +184,31 @@ end
 
 function update_enemies()
 	for e in all(enemies)do
-    printh(e.x)
+  --  printh(e.x)
     e.x-=0.5
 		if e.x < 0 then
 			del(enemies,e)
 		end
 		--collision
-		if collision(e,p) then
+		if collide_side(p,e) then
 			sfx(4)
 			p.life-=1
 			p.y-=10
-			printh("p.life="..p.life)
+			p.x-=10
+			print("p.life="..p.life)
 			if p.life==0 then
 				p.x=10
 				camx=0
 				p.life=3
 			end
 		end
-		--	del(enemies,e)
+	
+		if collide_jump(p,e) then
+			del(enemies,e)
+		end	
 	end
-
 end
-]]	
+
 -->8
 --collisions
 
@@ -245,21 +252,48 @@ function collide_map(obj,aim,flag)
 		return false
 	end	
 end
+	
+	--collisions ennemies cote
+function collide_side(a,b)
+printh("fonction collision")
+printh(flr(a.x))
+printh(flr(b.x))
+	if a.y == b.y-b.h
+	and (flr(a.x+8) == flr(b.x)
+	or flr(a.x) == flr(b.x+8)) then
+		return true
+	else
+		return false
+	end
+end	
+
+--collisions ennemies saut
+function collide_jump(a,b)
+	if flr((a.y/8)+2) == flr(b.y/8)
+	and flr(a.x/8) == flr(b.x/8) then
+		return true
+	else
+		return false
+	end
+end	
+
 -->8
 --old collisions
 
-function collision(a,b)
+--[[
+
+--[[
+function collide_enemies(a,b)
 	if a.x > b.x +8
-	or a.y > b.y +8
+ or a.y > b.y +8
 	or a.x + 8 < b.x
 	or a.y + 8 < b.y then
 		return false
 	else
 		return true
 	end
-end
+]]
 
---[[
 function is_grounded() 
 	bloc = mget(flr((p.x+4)/8),flr((p.y+8)/8)+1) --on recupere le bloc en dessous du joueur
 	bloc2 =mget(flr((p.x+4)/8),flr((p.y+8)/8)+1)             
@@ -267,7 +301,6 @@ function is_grounded()
 end
 
 function jump_peach()
- 
 	if (p.dy>=0 and  is_grounded()) then  
 		p.dy = 0 --pas de gravite (au sol)
 		if (btnp(⬆️)) p.dy = -7.5
@@ -538,7 +571,7 @@ __label__
 88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
 __gff__
-0000000000000000000101010100000000000000000001010101010300000000000000000000000000000000000000000000070701070700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000101010100000000000000000001010101010300000000000000000008000000000000000000000000070701070700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __map__
 15280e0e280e280e0e0e0e280e0e0e0e0e280e0e0e0e0e0e280e0e0e0e0e0e0e0e0e0e0e0e0e280e280e0e0e0e280e0e0e0e0e280e0e0e0e0e0e280e0e0e0e0e0e0e0e0e0e0e0e0e280e280e0e0e0e280e0e0e0e0e280e0e0e0e0e0e280e0e0e0e0e0e0e0e0e0e0e0e0e280e280e0e0e0e280e0e0e0e0e280e0e0e0e0e0e280e
