@@ -37,6 +37,9 @@ music(0)
 
 	enemies={}
 	create_enemies()
+	
+	init_msg()
+	create_msg("mario","coucou la miss", "tas un 06?")
 end
 
 function _update()
@@ -44,6 +47,7 @@ function _update()
 	follow_mario()
 	update_enemies()
 	update_camera()
+	update_msg()
 end
 
 
@@ -54,8 +58,8 @@ function _draw()
 	draw_daisy()
 	draw_peach()
 	draw_enemies()
-	--print("life : "..p.life,camx,camy,4)
-	print(dist)
+	draw_msg()
+	print("life : "..p.life,camx,camy,4)
 end
 -->8
 --map
@@ -362,6 +366,33 @@ function jump_peach()
 		p.y += p.dy
 end	
 ]]
+-->8
+--messages
+
+function init_msg()
+	messages={}
+end
+
+function create_msg(name,...)
+	msg_title=name
+	messages={...}
+end 
+
+function update_msg()
+	if(btn(❎)) then
+		deli(messages,1)
+	end
+end
+
+function draw_msg()
+	if messages[1] then
+		local y = 100
+		rectfill(6,y,6+40,y+6,2)
+		print(msg_title,7,y,7)
+		rectfill(2,y+9,125,y+20,4)
+		print(messages[1],0,y+10,7)
+	end
+end
 __gfx__
 7eeeeee70a9999a0bbbbbbbbbbbbbbbbbb3333bb11111111444444440888888000188100bbbbbbbb444444443333333377777777bbbbbbbbcccccccccccc7ccc
 7eeccee7aaffffaabbbbbbbbbbbbbbbbb33aa33b111111114444444488877888089119803bbb3bbb445444443b3333b37b777777bbbbbbbbcccccccccccc7ccc
