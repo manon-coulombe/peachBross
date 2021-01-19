@@ -37,20 +37,11 @@ music(0)
 
 	enemies={}
 	create_enemies()
---[[
-	enemies[1] = {
-	x=flr(rnd(p.x+60)),
-	y=96,
-	}
-]]	
 end
 
 function _update()
 	move_peach()
 	follow_mario()
---	if #enemies==0 then
---		create_enemies()
---	end
 	update_enemies()
 	update_camera()
 end
@@ -63,6 +54,8 @@ function _draw()
 	draw_daisy()
 	draw_peach()
 	draw_enemies()
+	--print("life : "..p.life,camx,camy,4)
+	print(dist)
 end
 -->8
 --map
@@ -85,7 +78,6 @@ end
 function draw_peach()
 	spr(1,p.x,p.y)
 	spr(0,p.x,p.y+8)
---	printh("p.x="..p.x)
 end
 
 function draw_mario()
@@ -159,9 +151,10 @@ function move_peach()
 end
 	
 function follow_mario()
-	if(p.x<m.x) then
+	dist = p.x - m.x
+	if(p.x<m.x and dist < -16) then
 		m.x-=1
-	else
+	elseif(p.x>m.x and dist > 16) then
 		m.x+=1
 	end
 end
