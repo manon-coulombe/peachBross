@@ -39,7 +39,7 @@ music(0)
 	create_enemies()
 	
 	init_msg()
-	create_msg("mario","coucou la miss", "tas un 06?")
+	create_msg("mario","coucou la miss","tas un 06?")
 end
 
 function _update()
@@ -379,7 +379,7 @@ function create_msg(name,...)
 end 
 
 function update_msg()
-	if(btn(❎)) then
+	if(btnp(❎)) then
 		deli(messages,1)
 	end
 end
@@ -387,8 +387,8 @@ end
 function draw_msg()
 	if messages[1] then
 		local y = 100
-		rectfill(6,y,6+40,y+6,2)
-		print(msg_title,7,y,7)
+		rectfill(m.x-16,m.y-30,m.x,m.y-20,2)
+		print(msg_title,m.x,m.y-30,7)
 		rectfill(2,y+9,125,y+20,4)
 		print(messages[1],0,y+10,7)
 	end
