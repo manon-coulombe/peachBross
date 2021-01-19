@@ -109,15 +109,16 @@ function move_peach()
 	p.dx*=friction
 	p.dy+=gravity
 	
-	if (btn(➡️) and p.x<127*8) then
+	if (btn(➡️) and p.x<125*8) then
 		p.dx += 0.5
 	end
-	if (btn(⬅️) and p.x>0) then
+	if (btn(⬅️) and p.x>8) then
 	 p.dx -= 0.5
 	end
 	
  --jump
  if (btnp(⬆️) and p.landed) then
+ 	sfx(2)
  	p.dy-=8	
  	p.landed=false
  end
@@ -195,7 +196,9 @@ function update_enemies()
 			sfx(4)
 			p.life-=1
 			p.y-=10
-			p.x-=10
+			if p.x>8 then
+				p.x-=10
+			end	
 			print("p.life="..p.life)
 			if p.life==0 then
 				p.x=10
@@ -256,9 +259,6 @@ end
 	
 	--collisions ennemies cote
 function collide_side(a,b)
-printh("fonction collision")
-printh(flr(a.x))
-printh(flr(b.x))
 	if a.y == b.y-b.h
 	and (flr(a.x+8) == flr(b.x)
 	or flr(a.x) == flr(b.x+8)) then
