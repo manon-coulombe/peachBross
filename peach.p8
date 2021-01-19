@@ -170,7 +170,64 @@ end
 
 function create_enemies()
 	new_enemy={
+		s=37,
 		x=80,
+		y=96,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+		new_enemy={
+		s=44,
+		x=200,
+		y=70,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+	new_enemy={
+		s=41,
+		x=400,
+		y=96,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+	new_enemy={
+		s=37,
+		x=500,
+		y=96,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+	new_enemy={
+		s=44,
+		x=600,
+		y=70,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+	new_enemy={
+		s=41,
+		x=700,
+		y=96,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+		new_enemy={
+		s=44,
+		x=800,
+		y=70,
+		h=8,
+		w=8
+	}
+	add(enemies,new_enemy)
+	new_enemy={
+		s=41,
+		x=900,
 		y=96,
 		h=8,
 		w=8
@@ -180,7 +237,7 @@ end
 
 function draw_enemies()
 	for e in all(enemies)do
-		spr(37,e.x,e.y)
+		spr(e.s,e.x,e.y)
 	end
 end
 
